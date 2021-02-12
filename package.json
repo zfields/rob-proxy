@@ -1,0 +1,26 @@
+{
+  "name": "rob-proxy",
+  "version": "0.1.0",
+  "description": "Proxy Service for the Nintendo R.O.B. Showcase application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bsatrom/rob-proxy.git"
+  },
+  "author": "Brandon Satrom <bsatrom@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bsatrom/rob-proxy/issues"
+  },
+  "homepage": "https://github.com/bsatrom/rob-proxy#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.6",
+    "morgan": "^1.10.0"
+  }
+}
