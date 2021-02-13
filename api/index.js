@@ -53,9 +53,16 @@ const proxyOptions = {
     res.end('Something went wrong: ' + err);
   },
   onProxyReq(proxyReq, req, res) {
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    );
+
     // Change input from {"command":"left"}
     if (req.method == 'POST' && req.body) {
-      console.log("Original Body: ", req.body);
       cmdName = req.body["command"] ? req.body["command"] : "none";
 
       if (req.body) delete req.body;
@@ -72,8 +79,6 @@ const proxyOptions = {
       proxyReq.setHeader('content-type', 'application/json');
       proxyReq.setHeader('Content-Length', bodyStr.length);
       proxyReq.setHeader('X-SESSION-TOKEN', TOKEN);
-
-      console.log("New body: ", bodyStr);
 
       proxyReq.write(bodyStr, () => proxyReq.end());
     }
