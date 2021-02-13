@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const morgan = require("morgan");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
@@ -18,6 +19,8 @@ const TOKEN = process.env.SESSION_TOKEN;
 
 // Logging
 app.use(morgan('dev'));
+// parse application/json
+app.use(bodyParser.json());
 
 const cmdMap = {
   "left": 186,
@@ -28,8 +31,7 @@ const cmdMap = {
   "raise_2": 187,
   "close": 190,
   "open": 238,
-  "recalibrate": 171,
-  "none": 000
+  "recalibrate": 171
 };
 
 // Info GET endpoint
@@ -52,27 +54,28 @@ const proxyOptions = {
   },
   onProxyReq(proxyReq, req, res) {
     // Change input from {"command":"left"}
-    if (req.method == 'POST') {
+    if (req.method == 'POST' && req.body) {
       console.log("Original Body: ", req.body);
       cmdName = req.body["command"] ? req.body["command"] : "none";
 
       if (req.body) delete req.body;
 
       // To {"req":"note.add","file":"rob.qi", "body": {"cmd":186}}
-      let body = new Object();
-      body.req = "note.add";
-      body.file = "rob.qi";
-      body.body = {"cmd": cmdMap[cmdName]};
+      const body = {
+        req: "note.add",
+        file: "rob.qi",
+        body: {"cmd": cmdMap[cmdName] ? cmdMap[cmdName] : 000}
+      };
+      const bodyStr = JSON.stringify(body);
 
       // Update header
       proxyReq.setHeader('content-type', 'application/json');
-      proxyReq.setHeader('content-length', body.length);
+      proxyReq.setHeader('Content-Length', bodyStr.length);
       proxyReq.setHeader('X-SESSION-TOKEN', TOKEN);
 
-      console.log("New body: ", body);
+      console.log("New body: ", bodyStr);
 
-      proxyReq.write(body);
-      proxyReq.end();
+      proxyReq.write(bodyStr, () => proxyReq.end());
     }
   }
 };
