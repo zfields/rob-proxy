@@ -6,6 +6,7 @@ require('dotenv').config();
 
 // Create Express Server
 const app = express();
+const router = express.Router();
 
 // Configuration
 const PORT = 3000;
@@ -18,27 +19,75 @@ const TOKEN = process.env.SESSION_TOKEN;
 // Logging
 app.use(morgan('dev'));
 
+const cmdMap = {
+  "left": 186,
+  "right": 234,
+  "lower": 174,
+  "lower_2": 251,
+  "raise": 250,
+  "raise_2": 187,
+  "close": 190,
+  "open": 238,
+  "recalibrate": 171,
+  "none": 000
+};
+
 // Info GET endpoint
 app.get('/info', (req, res, next) => {
   res.send('This is a proxy service forwards authorized requests to \
     a Notehub service.');
 });
 
-// Proxy endpoints
-app.use('/api', createProxyMiddleware({
+const proxyOptions = {
   target: BASE_URL,
   changeOrigin: true,
   pathRewrite: {
       [`^/api`]: `/req?product=${PRODUCT}&device=${DEVICE}`,
   },
-  headers: {
-    'X-SESSION-TOKEN': TOKEN
+  onError(err, req, res) {
+    res.writeHead(500, {
+      'Content-Type': 'text/plain',
+    });
+    res.end('Something went wrong: ' + err);
+  },
+  onProxyReq(proxyReq, req, res) {
+    // Change input from {"command":"left"}
+    if (req.method == 'POST') {
+      console.log("Original Body: ", req.body);
+      cmdName = req.body["command"] ? req.body["command"] : "none";
+
+      if (req.body) delete req.body;
+
+      // To {"req":"note.add","file":"rob.qi", "body": {"cmd":186}}
+      let body = new Object();
+      body.req = "note.add";
+      body.file = "rob.qi";
+      body.body = {"cmd": cmdMap[cmdName]};
+
+      // Update header
+      proxyReq.setHeader('content-type', 'application/json');
+      proxyReq.setHeader('content-length', body.length);
+      proxyReq.setHeader('X-SESSION-TOKEN', TOKEN);
+
+      console.log("New body: ", body);
+
+      proxyReq.write(body);
+      proxyReq.end();
+    }
   }
-}));
+};
+
+const proxyFilter = function (path, req) {
+  return req.method === 'GET' || req.method === 'POST';
+};
+
+router.all('/api', createProxyMiddleware(proxyFilter, proxyOptions));
+
+app.use('/', router);
 
 // Start the Proxy
 app.listen(PORT, HOST, () => {
   console.log(`Starting Proxy at ${HOST}:${PORT}`);
 });
 
-module.exports = app;
+module.exports = { app, router };
