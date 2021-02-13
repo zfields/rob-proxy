@@ -2,10 +2,10 @@
   "name": "rob-proxy",
   "version": "0.1.0",
   "description": "Proxy Service for the Nintendo R.O.B. Showcase application",
-  "main": "index.js",
+  "main": "api/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node api/index.js"
   },
   "repository": {
     "type": "git",
