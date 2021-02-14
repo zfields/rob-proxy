@@ -65,6 +65,8 @@ const proxyOptions = {
     if (req.method == 'POST' && req.body) {
       cmdName = req.body["command"] ? req.body["command"] : "none";
 
+      console.log("Command: ", cmdName);
+
       if (req.body) delete req.body;
 
       // To {"req":"note.add","file":"rob.qi", "body": {"cmd":186}}
@@ -74,6 +76,8 @@ const proxyOptions = {
         body: {"cmd": cmdMap[cmdName] ? cmdMap[cmdName] : 000}
       };
       const bodyStr = JSON.stringify(body);
+
+      console.log("New Body: ", bostStr);
 
       // Update header
       proxyReq.setHeader('content-type', 'application/json');
