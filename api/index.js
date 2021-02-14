@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require("morgan");
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -21,6 +22,7 @@ const TOKEN = process.env.SESSION_TOKEN;
 app.use(morgan('dev'));
 // parse application/json
 app.use(bodyParser.json());
+app.options('*', cors());
 
 const cmdMap = {
   "left": 186,
