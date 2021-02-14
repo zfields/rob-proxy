@@ -77,7 +77,7 @@ const proxyOptions = {
       };
       const bodyStr = JSON.stringify(body);
 
-      console.log("New Body: ", bostStr);
+      console.log("New Body: ", bodyStr);
 
       // Update header
       proxyReq.setHeader('content-type', 'application/json');
