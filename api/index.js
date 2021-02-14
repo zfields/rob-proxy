@@ -66,10 +66,7 @@ const proxyOptions = {
     // Change input from {"command":"left"}
     if (req.method == 'POST' && req.body) {
       console.log("BODY: ", req.body);
-
       cmdName = req.body["command"] ? req.body["command"] : "none";
-
-      console.log("Command: ", cmdName);
 
       if (req.body) delete req.body;
 
