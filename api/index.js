@@ -25,20 +25,18 @@ app.use(bodyParser.json());
 app.options('*', cors());
 
 const cmdMap = {
-  "left": 186,
-  "right": 234,
-  "lower": 174,
-  "lower_2": 251,
-  "raise": 250,
-  "raise_2": 187,
-  "close": 190,
-  "open": 238,
-  "recalibrate": 171
+  "LEFT": 186,
+  "RIGHT": 234,
+  "DOWN": 174,
+  "UP": 250,
+  "CLOSE": 190,
+  "OPEN": 238,
+  "RECALIBRATE": 171
 };
 
 // Info GET endpoint
 app.get('/info', (req, res, next) => {
-  res.send('This is a proxy service forwards authorized requests to \
+  res.send('This proxy service forwards authorized requests to \
     a Notehub service.');
 });
 
@@ -70,10 +68,11 @@ const proxyOptions = {
 
       if (req.body) delete req.body;
 
-      // To {"req":"note.add","file":"rob.qi", "body": {"cmd":186}}
+      // {"req":"note.add","file":"rob.qi","id":<guid>,"body":{"cmd":186}}
       const body = {
         req: "note.add",
         file: "rob.qi",
+        id: "some-guid",
         body: {"cmd": cmdMap[cmdName] ? cmdMap[cmdName] : 000}
       };
       const bodyStr = JSON.stringify(body);
