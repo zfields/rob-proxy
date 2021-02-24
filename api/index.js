@@ -61,18 +61,18 @@ const proxyOptions = {
       'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
     );
 
-    // Change input from {"command":"left"}
+    // Change input from {"command":"LEFT"}
     if (req.method == 'POST' && req.body) {
       console.log("BODY: ", req.body);
       cmdName = req.body["command"] ? req.body["command"] : "none";
 
       if (req.body) delete req.body;
 
-      // {"req":"note.add","file":"rob.qi","id":<guid>,"body":{"cmd":186}}
+      // {"req":"note.add","file":"rob.qi","id":<unique uint32_t>,"body":{"cmd":186}}
       const body = {
         req: "note.add",
         file: "rob.qi",
-        id: "some-guid",
+        id: 19790917,
         body: {"cmd": cmdMap[cmdName] ? cmdMap[cmdName] : 000}
       };
       const bodyStr = JSON.stringify(body);
