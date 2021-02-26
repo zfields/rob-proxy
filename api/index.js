@@ -3,12 +3,29 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require("morgan");
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const { performance } = require('perf_hooks');
 
 require('dotenv').config();
 
 // Create Express Server
 const app = express();
 const router = express.Router();
+
+function generateUUID() { // Public Domain/MIT
+    var d = new Date().getTime();//Timestamp
+    var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16;//random number between 0 and 16
+        if(d > 0){//Use timestamp until depleted
+            r = (d + r)%16 | 0;
+            d = Math.floor(d/16);
+        } else {//Use microseconds since page-load if supported
+            r = (d2 + r)%16 | 0;
+            d2 = Math.floor(d2/16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
 
 // Configuration
 const PORT = 3000;
@@ -72,8 +89,7 @@ const proxyOptions = {
       const body = {
         req: "note.add",
         file: "rob.qi",
-        id: 19790917,
-        body: {"cmd": cmdMap[cmdName] ? cmdMap[cmdName] : 000}
+        body: {"cmd": cmdMap[cmdName] ? cmdMap[cmdName] : 000, "guid": generateUUID()}
       };
       const bodyStr = JSON.stringify(body);
 
