@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bsatrom/rob-proxy.git"
+    "url": "git+https://github.com/zfields/rob-proxy.git"
   },
   "author": "Brandon Satrom <bsatrom@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bsatrom/rob-proxy/issues"
+    "url": "https://github.com/zfields/rob-proxy/issues"
   },
-  "homepage": "https://github.com/bsatrom/rob-proxy#readme",
+  "homepage": "https://github.com/zfields/rob-proxy#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
