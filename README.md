@@ -7,7 +7,7 @@ Local Development
 -----------------
 
 ```none
-$ docker run --interactive --net=host --rm --tty --volume $(pwd):/node-app/ node:alpine sh
+$ docker run --interactive --net=host --rm --tty --volume $(pwd):/node-app/ node:lts-alpine sh
 # cd node-app/
 # npm install
 

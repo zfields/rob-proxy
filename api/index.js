@@ -21,8 +21,8 @@ const TOKEN = process.env.SESSION_TOKEN;
 // Logging
 app.use(morgan('dev'));
 // parse application/json
+app.use(cors());
 app.use(bodyParser.json());
-app.options('*', cors());
 
 const cmdMap = {
     "LEFT": 186,
@@ -44,7 +44,7 @@ const proxyOptions = {
     target: BASE_URL,
     changeOrigin: true,
     pathRewrite: {
-        [`^/(api|status).*`]: `/req?product=${PRODUCT}&device=${DEVICE}`,
+        [`^/api.*`]: `/req?product=${PRODUCT}&device=${DEVICE}`,
     },
     onError(err, req, res) {
         res.writeHead(500, {
@@ -176,8 +176,7 @@ const proxyFilter = function (path, req) {
     return req.method === 'GET' || req.method === 'POST';
 };
 
-router.all('/api', createProxyMiddleware(proxyFilter, proxyOptions));
-router.all('/status', createProxyMiddleware(proxyFilter, proxyOptions));
+router.all('*', createProxyMiddleware(proxyFilter, proxyOptions));
 
 app.use('/', router);
 
