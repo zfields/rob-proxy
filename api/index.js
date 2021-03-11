@@ -66,7 +66,7 @@ const proxyOptions = {
         if (req.method == 'GET') {
             console.log("GET QUERY:", req.query);
             switch (req.query.status) {
-                case "AWAITING_NOTEHUB_IO":
+                case "AWAITING NOTEHUB.IO":
                     // Poll Notehub for command request arrival
                     // curl -L 'https://api.notefile.net/req?product=com.blues.zfields:showcase&device=dev:000000000000000' --header 'X-SESSION-TOKEN: <token>' --data '{"req":"hub.app.data.query","query":{"columns":".when;.file;.body", "where":".file::text = '\''rob.qi'\'' AND .body.guid::text = '\''00000000-0000-0000-0000-000000000000'\''"}}'
                     body = {
@@ -77,7 +77,7 @@ const proxyOptions = {
                         }
                     };
                     break;
-                case "AWAITING_CELL_TOWER":
+                case "AWAITING CELLULAR NETWORK":
                     // Poll Notehub for command request departure
                     // curl -L 'https://api.notefile.net/req?product=com.blues.zfields:showcase&device=dev:000000000000000' --header 'X-SESSION-TOKEN: <token>' --data '{"req":"note.changes","file":"rob.qi","device":"dev:000000000000000"}'
                     body = {
@@ -86,7 +86,7 @@ const proxyOptions = {
                         device: "dev:864475044218237"
                     };
                     break;
-                case "AWAITING_ROB":
+                case "AWAITING R.O.B.":
                     // Poll Notehub for R.O.B.'s response
                     // curl -L 'https://api.notefile.net/req?product=com.blues.zfields:showcase&device=dev:000000000000000' --header 'X-SESSION-TOKEN: <token>' --data '{"req":"hub.app.data.query","query":{"columns":".when;.file;.body", "where":".file::text = '\''rob.qo'\'' AND .body.guid::text = '\''00000000-0000-0000-0000-000000000000'\''"}}'
                     body = {
@@ -138,7 +138,7 @@ const proxyOptions = {
             if ("GET" === req.method) {
                 let query_results;
                 switch (req.query.status) {
-                    case "AWAITING_NOTEHUB_IO":
+                    case "AWAITING NOTEHUB.IO":
                         query_results = JSON.parse(data);
                         console.log(query_results.length, "row(s) matched the query.");
 
@@ -148,14 +148,14 @@ const proxyOptions = {
                             res.status(404);
                         }
                         break;
-                    case "AWAITING_CELL_TOWER":
+                    case "AWAITING CELLULAR NETWORK":
                         if (0 > dataStr.search(req.query.guid)) {
                             res.status(200);
                         } else {
                             res.status(420);
                         }
                         break;
-                    case "AWAITING_ROB":
+                    case "AWAITING R.O.B.":
                         query_results = JSON.parse(data);
                         console.log(query_results.length, "row(s) matched the query.");
 
