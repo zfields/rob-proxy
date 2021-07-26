@@ -29,7 +29,7 @@ npm notice
 [HPM] Proxy created: function (path, req) {
   return req.method === 'GET' || req.method === 'POST';
 }  -> https://api.notefile.net
-[HPM] Proxy rewrite rule created: "^/api" ~> "/req?product=com.blues.zfields:showcase&device=dev:0209f00c8251c4f4620139"
+[HPM] Proxy rewrite rule created: "^/api.*" ~> "/req?product=com.blues.zfields:showcase&device=dev:0209f00c8251c4f4620139"
 Starting Proxy at localhost:3000
 ```
 
